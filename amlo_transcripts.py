@@ -50,9 +50,19 @@ df = pd.DataFrame({"Fechas": fechas, "Links": links})
 print(df)
 df.to_csv('./output/fechas_links_amlo.csv', index=True)    
 
+speech = []
+counter = 0
+for url in df["Links"]:
+    req = requests.get(url)
+    soup = bs(req)
+    entrada = soup.find_all("div", class_ = "entry-content")
+    speech.append(entrada)
+    counter +=1
+    print(counter,"Discurso de ", len(df.index))
 
+df["Discurso"] = speech
 
-
+df.to_csv('./output/speeches_amlo.csv', index=True)    
 
 
 
